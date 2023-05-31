@@ -24,7 +24,7 @@ public class AlunoController {
 	@Autowired
 	AlunoService alunoService = new AlunoService();
 	
-	@GetMapping
+	@GetMapping("/todos")
 	public ResponseEntity<List<AlunoModel>> retornaAlunos() {
 		List<AlunoModel> listaDeAlunos = new ArrayList<AlunoModel>();
 		try {
@@ -62,11 +62,14 @@ public class AlunoController {
     public ResponseEntity<AlunoModel> alterar(@PathVariable(value = "id") long id, @Valid @RequestBody AlunoModel aluno)
     {
 		System.out.println("aqui");
-        Optional<AlunoModel> AlunoModelQueSeraAlteradoOptional = alunoService.buscarPorId(id);
-        if(AlunoModelQueSeraAlteradoOptional.isPresent()){
-        	AlunoModel alunoQueSeraAlterado = AlunoModelQueSeraAlteradoOptional.get();
+        Optional<AlunoModel> alunoOptional = alunoService.buscarPorId(id);
+        if(alunoOptional.isPresent()){
+        	AlunoModel alunoQueSeraAlterado = alunoOptional.get();
         	alunoQueSeraAlterado.setNome(aluno.getNome());
+        	alunoQueSeraAlterado.setNome(aluno.getNome());
+
         	alunoService.salvar(alunoQueSeraAlterado);
+        	
             return new ResponseEntity<AlunoModel>(alunoQueSeraAlterado, HttpStatus.OK);
         }
         else {
